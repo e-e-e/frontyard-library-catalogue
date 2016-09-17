@@ -1,0 +1,36 @@
+{>base/}
+{<content}
+	<h2>{title}</h2>
+	<p>By letter: 
+	<a href="/subjects/A">a</a>, 
+	<a href="/subjects/B">b</a>, 
+	<a href="/subjects/C">c</a>, 
+	<a href="/subjects/D">d</a>, 
+	<a href="/subjects/E">e</a>, 
+	<a href="/subjects/F">f</a>, 
+	<a href="/subjects/G">g</a>, 
+	<a href="/subjects/H">h</a>, 
+	<a href="/subjects/I">i</a>, 
+	<a href="/subjects/J">j</a>, 
+	<a href="/subjects/K">k</a>, 
+	<a href="/subjects/L">l</a>, 
+	<a href="/subjects/M">m</a>, 
+	<a href="/subjects/N">n</a>, 
+	<a href="/subjects/O">o</a>, 
+	<a href="/subjects/P">p</a>, 
+	<a href="/subjects/Q">q</a>, 
+	<a href="/subjects/R">r</a>, 
+	<a href="/subjects/S">s</a>, 
+	<a href="/subjects/T">t</a>, 
+	<a href="/subjects/U">u</a>, 
+	<a href="/subjects/V">v</a>, 
+	<a href="/subjects/W">w</a>, 
+	<a href="/subjects/X">x</a>, 
+	<a href="/subjects/Y">y</a>, 
+	<a href="/subjects/Z">z</a></p>
+	<ul>
+		{#subjects}
+			<li><a href="/by/subject/{subject_id}">{subject}</a></li>
+		{/subjects}
+	</ul>
+{/content}

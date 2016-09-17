@@ -1,0 +1,36 @@
+{>base/}
+{<content}
+	<h2>{title}</h2>
+	<p>By letter: 
+	<a href="/authors/A">a</a>, 
+	<a href="/authors/B">b</a>, 
+	<a href="/authors/C">c</a>, 
+	<a href="/authors/D">d</a>, 
+	<a href="/authors/E">e</a>, 
+	<a href="/authors/F">f</a>, 
+	<a href="/authors/G">g</a>, 
+	<a href="/authors/H">h</a>, 
+	<a href="/authors/I">i</a>, 
+	<a href="/authors/J">j</a>, 
+	<a href="/authors/K">k</a>, 
+	<a href="/authors/L">l</a>, 
+	<a href="/authors/M">m</a>, 
+	<a href="/authors/N">n</a>, 
+	<a href="/authors/O">o</a>, 
+	<a href="/authors/P">p</a>, 
+	<a href="/authors/Q">q</a>, 
+	<a href="/authors/R">r</a>, 
+	<a href="/authors/S">s</a>, 
+	<a href="/authors/T">t</a>, 
+	<a href="/authors/U">u</a>, 
+	<a href="/authors/V">v</a>, 
+	<a href="/authors/W">w</a>, 
+	<a href="/authors/X">x</a>, 
+	<a href="/authors/Y">y</a>, 
+	<a href="/authors/Z">z</a></p>
+	<ul>
+		{#authors}
+			<li><a href="/by/author/{author_id}">{?name}{name}{:else}unauthored{/name} {?type}({type}){/type}</a></li>
+		{/authors}
+	</ul>
+{/content}

@@ -1,0 +1,29 @@
+{
+  "name": "frontyard-library-catalogue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Benjamin Forster",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "csv-parse": "^1.1.7",
+    "express": "^4.14.0",
+    "pg": "^6.0.3",
+    "q": "^1.4.1",
+    "request": "^2.74.0",
+    "stream-transform": "^0.1.1",
+    "express-session": "^1.13.0",
+    "helmet": "^2.1.0",
+    "klei-dust": "^1.0.0",
+    "body-parser": "^1.15.1",
+    "connect-flash": "^0.1.1",
+    "dustjs-helpers": "^1.7.3",
+    "dustjs-linkedin": "^2.7.2",
+    "errorhandler": "^1.4.3"
+  }
+}

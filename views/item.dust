@@ -1,0 +1,21 @@
+{>base/}
+{<content}
+	<h2>Item details:</h2>
+	<h3 id="{item_id}">{title} ({issued})</h3>
+	<p>
+		<strong>authors:</strong> 
+		{#authors}
+			<a href="/by/author/{author_id}">{?name}{name}{:else}No author{/name}{?type} ({type}){/type}</a>{@sep}, {/sep}
+		{/authors}
+	</p>
+	<p><strong>Publisher:</strong> {publisher}</p>
+	{?fy_notes}<p><strong>Notes:</strong> {fy_notes}</p>{/fy_notes}
+	<p>Look at on <a href="{trove_link}">Trove</a></p>
+	<p>{trove_bibrec.Summary}</p>
+	<h3>Subjects</h3>
+	<ul>
+	{#subjects}
+		<li><a href="/by/subject/{subject_id}">{subject}</a></li>
+	{/subjects}
+	</ul>
+{/content}

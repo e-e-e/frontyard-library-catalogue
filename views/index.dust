@@ -1,0 +1,10 @@
+{>base/}
+{<content}
+
+	<h2>{title}</h2>
+	<ul>
+		{#items}
+			<li><a href="/item/{item_id}">{title}</a> {?issued}({issued}){/issued}{?author}, by {author}{/author}</li>
+		{/items}
+	</ul>
+{/content}
