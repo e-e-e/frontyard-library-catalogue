@@ -1,7 +1,7 @@
 {>base/}
 {<content}
 
-	<h2>{title}</h2>
+	<h2>{title} <em>(ordered by rarity)</em></h2>
 	{>pagination/}
 	<ul>
 		{#page.items}
