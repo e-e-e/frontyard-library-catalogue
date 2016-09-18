@@ -51,7 +51,11 @@
 				<strong>{key}:</strong>
 			</td>
 			<td>
-				{value}
+				<ul>
+					{#value}
+					<li>{.}</li>
+					{/value}
+				</ul>
 			</td>
 		</tr>
 	{/trove_bibrec}
