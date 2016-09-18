@@ -29,6 +29,7 @@ Then run the server: `node index.js`.
 
 There is a lot of work to do, this is still just a working prototype.
 
+- include non-alpha index in A-Z indexes.
 - show new acquisitions first.
 - destinquish between the old and the new collections.
 - implement proper 404 and 500 pages.
