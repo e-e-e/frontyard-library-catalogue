@@ -10,3 +10,29 @@ Frontyard would like to thank:
 - Isabelle Hore-Thorburn, Eddie Hopely, Sommer and Peter Williamson for helping catalogue this mammoth.
 
 *Note: The Australia Council’s library was decommissioned in November 2014 due to very low usage levels over a sustained period. While the collection was small the Council has endeavoured to have key materials remain publicly available through donations to other libraries. Items that were unique to the Australia Council collection have been offered to the National Library of Australia in Canberra.*
+
+## How to run locally
+
+You need to have install node v4 or greater and Postgres for the database.
+ 
+Make a config.json file based on the example file `config.default.json`.
+
+Most important is setting the port that you want to run the server on, the default is 8080.
+To use import functions (not yet public facing) you require a Trove API key.
+
+To set up a local copy of the collecton database simply import the `collecton-latest.db` into your postgres database: `psql library < collecton-latest.db`.
+
+Install all nodes dependencies: `npm install`.
+Then run the server: `node index.js`.
+
+## Todo:
+
+There is a lot of work to do, this is still just a working prototype.
+
+- implement proper 404 and 500 pages.
+- smarter search + options (title, author, subject, etc)
+- cache queries - particularly to table lengths.
+- orderby option (date, author, title, relevancy)
+- show count of items next to subject and author links, so that its obvious which subjects/authors have more affiliated records.
+- more creative ways of browsing the collection.
+- admin area with basic auth for adding books to the collection. 
