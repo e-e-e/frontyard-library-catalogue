@@ -21,6 +21,17 @@
 				{publisher}
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<strong>Uniqueness:</strong>
+			</td>
+			<td>
+				<ul>
+					<li>There are {work_holdings} copies of this book in other libraries</li>
+					<li>and {version_holdings} copies of this specific edition.</li>
+				</ul>
+			</td>
+		</tr>
 	{?fy_notes}
 		<tr>
 			<td>
