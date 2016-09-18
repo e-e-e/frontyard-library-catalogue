@@ -2,9 +2,11 @@
 {<content}
 
 	<h2>{title}</h2>
+	{>pagination/}
 	<ul>
-		{#items}
+		{#page.items}
 			<li><a href="/item/{item_id}">{title}</a> {?issued}({issued}){/issued}{?author}, by {author}{/author}</li>
-		{/items}
+		{/page.items}
 	</ul>
+	{>pagination/}
 {/content}

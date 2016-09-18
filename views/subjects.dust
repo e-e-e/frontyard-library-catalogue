@@ -28,9 +28,11 @@
 	<a href="/subjects/X">x</a>, 
 	<a href="/subjects/Y">y</a>, 
 	<a href="/subjects/Z">z</a></p>
+	{>pagination/}
 	<ul>
-		{#subjects}
+		{#page.items}
 			<li><a href="/by/subject/{subject_id}">{subject}</a></li>
-		{/subjects}
+		{/page.items}
 	</ul>
+	{>pagination/}
 {/content}

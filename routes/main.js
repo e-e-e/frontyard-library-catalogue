@@ -19,25 +19,32 @@ function configure_router() {
 		throw err;
 	}
 
+	router.get('/',(req,res) => {
+		var page = req.query.page || 0;
+		library.items(page)
+			.then( page => res.render('index', { title: "The collection:", page:page}))
+			.catch(handle_err);
+		
+	});
+
 	router.get('/about', (req, res) => res.render('about') );
 
 	router.get('/authors', (req,res) => {
 		var page = req.query.page || 0;
 		library.authors_list(page)
-			.then( authors => {
+			.then( page => {
 				let title = 'List of authors';
-				res.render('authors', { title: title, authors:authors });
+				res.render('authors', { title: title, page:page });
 			})
 			.catch(handle_err);
 	});
 
 	router.get('/authors/:letter', (req,res) => {
 		var page = req.query.page || 0;
-		console.log(req.params.letter);
 		library.authors_list_by_letter(req.params.letter, page, 1000)
-			.then( authors => {
+			.then( page => {
 				let title = 'List of authors starting with '+req.params.letter;
-				res.render('authors', { title: title, authors:authors });
+				res.render('authors', { title: title, page:page });
 			})
 			.catch(handle_err);
 	});
@@ -45,20 +52,19 @@ function configure_router() {
 	router.get('/subjects', (req,res) => {
 		var page = req.query.page || 0;
 		library.subjects_list(page)
-			.then( subjects => {
+			.then( page => {
 				let title = 'List of subjects';
-				res.render('subjects', { title: title, subjects:subjects });
+				res.render('subjects', { title: title, page:page });
 			})
 			.catch(handle_err);
 	});
 
 	router.get('/subjects/:letter', (req,res) => {
 		var page = req.query.page || 0;
-		console.log(req.params.letter);
-		library.subjects_list_by_letter(req.params.letter, page, 1000)
-			.then( subjects => {
+		library.subjects_list_by_letter(req.params.letter, page)
+			.then( page => {
 				let title = 'List of subjects starting with '+req.params.letter;
-				res.render('subjects', { title: title, subjects:subjects });
+				res.render('subjects', { title: title, page:page });
 			})
 			.catch(handle_err);
 	});
@@ -75,9 +81,9 @@ function configure_router() {
 		var page = req.query.page || 0;
 		var author = req.params.author_id;
 		Q.all([ library.author(author), library.items_by_author(author, page)])
-			.spread( (author, results) => {
+			.spread( (author, page) => {
 				let title = "All books by author: "+author.name +' '+ author.type;
-				res.render('index',{ title:title, items:results.rows});
+				res.render('index',{ title:title, page:page});
 			})
 			.catch(handle_err);
 	});
@@ -86,19 +92,11 @@ function configure_router() {
 		var page = req.query.page || 0;
 		var subject = req.params.subject_id;
 		Q.all([ library.subject(subject), library.items_by_subject(subject, page)])
-			.spread( (subject, results) => {
+			.spread( (subject, page) => {
 				let title = "All books by subject: "+subject.subject;
-				res.render('index',{ title:title, items:results.rows });
+				res.render('index',{ title:title, page:page });
 			})
 			.catch(handle_err);
-	});
-
-	router.get('/',(req,res) => {
-		var page = req.query.page || 0;
-		library.items(page)
-			.then(results=> res.render('index', {items:results.rows}))
-			.catch(handle_err);
-		
 	});
 
 	return router;

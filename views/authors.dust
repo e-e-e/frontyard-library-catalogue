@@ -28,9 +28,11 @@
 	<a href="/authors/X">x</a>, 
 	<a href="/authors/Y">y</a>, 
 	<a href="/authors/Z">z</a></p>
+	{>pagination/}
 	<ul>
-		{#authors}
+		{#page.items}
 			<li><a href="/by/author/{author_id}">{?name}{name}{:else}unauthored{/name} {?type}({type}){/type}</a></li>
-		{/authors}
+		{/page.items}
 	</ul>
+	{>pagination/}
 {/content}

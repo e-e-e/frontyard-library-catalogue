@@ -203,21 +203,24 @@ class Library {
 	}
 
 	items(page, x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items ORDER BY work_holdings LIMIT $1 OFFSET $2',[number,offset]);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM items');
+		var select = db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items ORDER BY work_holdings LIMIT $1 OFFSET $2',[data.per_page,data.offset]);
+		return pagination(count,select,data);
 	}
 
 	items_by_author(id,page,x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items INNER JOIN items_authors AS b USING (item_id) WHERE b.author_id=$1 ORDER BY work_holdings LIMIT $2 OFFSET $3',[id,number,offset]);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM items INNER JOIN items_authors AS b USING (item_id) WHERE b.author_id=$1', [id]);
+		var select = db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items INNER JOIN items_authors AS b USING (item_id) WHERE b.author_id=$1 ORDER BY work_holdings LIMIT $2 OFFSET $3',[id,data.per_page,data.offset]);
+		return pagination(count,select,data);
 	}
 
 	items_by_subject(id,page,x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items INNER JOIN items_subjects AS b USING (item_id) WHERE b.subject_id=$1 ORDER BY work_holdings LIMIT $2 OFFSET $3',[id,number,offset]);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM items INNER JOIN items_subjects AS b USING (item_id) WHERE b.subject_id=$1',[id]);
+		var select = db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items INNER JOIN items_subjects AS b USING (item_id) WHERE b.subject_id=$1 ORDER BY work_holdings LIMIT $2 OFFSET $3',[id,data.per_page,data.offset]);
+		return pagination(count,select,data);
 	}
 
 	item_detail(id) {
@@ -245,17 +248,17 @@ class Library {
 	}
 
 	authors_list(page, x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT a.author_id, a.name, a.type FROM authors AS a ORDER BY lower(a.name) LIMIT $1 OFFSET $2',[number,offset])
-			.then(r => r.rows);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM authors');
+		var select = db.query('SELECT a.author_id, a.name, a.type FROM authors AS a ORDER BY lower(a.name) LIMIT $1 OFFSET $2',[data.per_page,data.offset]);
+		return pagination(count, select, data);
 	}
 
 	authors_list_by_letter(letter, page, x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT a.author_id, a.name, a.type FROM authors AS a WHERE a.name ILIKE $3 ORDER BY lower(a.name) LIMIT $1 OFFSET $2',[number,offset,letter+'%'])
-			.then(r => r.rows);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM authors AS a WHERE a.name ILIKE $1', [letter+'%']);
+		var select = db.query('SELECT a.author_id, a.name, a.type FROM authors AS a WHERE a.name ILIKE $3 ORDER BY lower(a.name) LIMIT $1 OFFSET $2', [data.per_page,data.offset,letter+'%']);
+		return pagination(count, select, data);
 	}
 
 	subject (id) {
@@ -270,19 +273,55 @@ class Library {
 	}
 
 	subjects_list(page, x) {
-		var number = x || 100;
-		var offset = page*number;
-			return db.query('SELECT a.subject_id, a.subject FROM subjects AS a ORDER BY lower(a.subject) LIMIT $1 OFFSET $2',[number,offset])
-			.then(r => r.rows);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM subjects');
+		var select = db.query('SELECT a.subject_id, a.subject FROM subjects AS a ORDER BY lower(a.subject) LIMIT $1 OFFSET $2',[data.per_page,data.offset]);
+		return pagination(count, select, data);
 	}
 
 	subjects_list_by_letter(letter, page, x) {
-		var number = x || 100;
-		var offset = page*number;
-		return db.query('SELECT a.subject_id, a.subject FROM subjects AS a WHERE a.subject ILIKE $3 ORDER BY lower(a.subject) LIMIT $1 OFFSET $2',[number,offset,letter+'%'])
-			.then(r => r.rows);
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM subjects AS a WHERE a.subject ILIKE $1',[ letter+'%']);
+		var select = db.query('SELECT a.subject_id, a.subject FROM subjects AS a WHERE a.subject ILIKE $3 ORDER BY lower(a.subject) LIMIT $1 OFFSET $2',[ data.per_page, data.offset, letter+'%']);
+		return pagination(count, select, data);
 	}
 
+}
+
+function make_pagination_data (page, n) {
+	var number = n || 100;
+	var offset = page*number;
+	return { 
+		offset: offset,
+		page: page,
+		per_page: number 
+	};
+}
+
+function pagination(count, select, data) {
+	return Q(count)
+			.then( mixin_pagination_fn(data) )
+			.then( r => select )
+			.then( mixin_items_fn(data) );
+}
+
+function mixin_pagination_fn (data) {
+	// need validation here 
+	return r => {
+			data.total = r.rows[0].count;
+			data.pages = Math.ceil(r.rows[0].count / data.per_page);
+		};
+}
+
+function mixin_items_fn (data) {
+	//and add links etc
+	return r => {
+			data.page = parseInt(data.page) + 1; // add one to make human understandable.
+			data.next_link = (data.page != data.pages) ? '?page='+data.page : undefined;
+			data.prev_link = (data.page > 1 ) ? '?page='+(data.page-2) : undefined;
+			data.items = r.rows;
+			return data;
+		};
 }
 
 /*global exports:true*/

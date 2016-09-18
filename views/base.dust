@@ -14,18 +14,28 @@
 	</style>
 </head>
 <body>
+	<header>
 	<h1>**frontyard library**</h1>
-	<h2>
-		<form>
-			<a href="/about">About</a> | 
-			<a href="/">Collection</a> | 
-			<a href="/subjects">Subjects</a> | 
-			<a href="/authors">Authors</a> 
-		
-			<label for="query"></label><input type="text" name="query"/>
-			<button type="submit">Quick Search</button>
-		</form>
-	</h2>
+		<h2>
+			<form>
+				<a href="/about">About</a> | 
+				<a href="/">Collection</a> | 
+				<a href="/subjects">Subjects</a> | 
+				<a href="/authors">Authors</a> 
+			
+				<label for="query"></label><input type="text" name="query"/>
+				<button type="submit">Quick Search</button>
+			</form>
+		</h2>
+	</header>
+	<hr>
 	{+content/}
+	<hr>
+	<footer>
+		<p><strong>We acknowledge that frontyard meets on Aboriginal land - the Cadigal Wangal people of the Eora are the traditional custodians of the land. We pay our respects to elders past and present.</strong></p>
+		<hr>
+		<p>This online catalogue is a work in progress. It is proudly opensource and available on Github - <a href="https://github.com/e-e-e/frontyard-library-catalogue">fork it here</a>. We welcome contributors.</p>
+		<p>If you would like to see a feature added, or want to suggest changes, <a href="mailto:info@frontyardprojects.org">get in touch</a>.</p>
+	</footer>
 </body>
 </html>
