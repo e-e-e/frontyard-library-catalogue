@@ -11,6 +11,14 @@
 		h1 {
 			text-align: center;
 		}
+		table ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		table tr{
+			vertical-align: top;
+		}
 	</style>
 </head>
 <body>

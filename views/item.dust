@@ -2,20 +2,62 @@
 {<content}
 	<h2>Record details:</h2>
 	<h3 id="{item_id}">{title} ({issued})</h3>
-	<p>
-		<strong>Authors:</strong> 
-		{#authors}
-			<a href="/by/author/{author_id}">{?name}{name}{:else}No author{/name}{?type} ({type}){/type}</a>{@sep}, {/sep}
-		{/authors}
-	</p>
-	<p><strong>Publisher:</strong> {publisher}</p>
-	{?fy_notes}<p><strong>Notes:</strong> {fy_notes}</p>{/fy_notes}
-	<p>Look at on <a href="{trove_link}">Trove</a></p>
-	<p>{trove_bibrec.Summary}</p>
-	<h3>Subjects</h3>
-	<ul>
-	{#subjects}
-		<li><a href="/by/subject/{subject_id}">{subject}</a></li>
+	<table valign=top>
+		<tr>
+			<td>
+				<strong>Authors:</strong>
+			</td> 
+			<td>
+				{#authors}
+					<a href="/by/author/{author_id}">{?name}{name}{:else}No author{/name}{?type} ({type}){/type}</a>{@sep}, {/sep}
+				{/authors}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong>Publisher:</strong>
+			</td>
+			<td>
+				{publisher}
+			</td>
+		</tr>
+	{?fy_notes}
+		<tr>
+			<td>
+				<strong>Frontyard Notes:</strong>
+			</td>
+			<td>
+				{fy_notes}
+			</td>
+		</tr>
+	{/fy_notes}
+	{?subjects}
+		<tr>
+			<td>
+				<strong>Subjects:</strong>
+			</td>
+			<td>
+				<ul>
+				{#subjects}
+					<li><a href="/by/subject/{subject_id}">{subject}</a></li>
+				{/subjects}
+				</ul>
+			</td>
+		</tr>
 	{/subjects}
-	</ul>
+	{#trove_bibrec}
+		<tr>
+			<td style="white-space: nowrap;">
+				<strong>{key}:</strong>
+			</td>
+			<td>
+				{value}
+			</td>
+		</tr>
+	{/trove_bibrec}
+	</table>
+	{?trove_bibrec}
+		<p>This record was constructed from data on Trove. Look at the original data on <a href="{trove_link}">Trove</a></p>
+	{/trove_bibrec}
+	<p><em>Note:Dewey number is taken from trove and may not correspond to the number on the book within the collection at Frontyard. We are working on a solution to finding books at the moment, if you want to be involved in creating a solution <a href="mailto:info@frontyardprojects.org">get in touch</a>.</em></p>
 {/content}

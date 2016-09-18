@@ -242,7 +242,21 @@ class Library {
 			.spread((data, subjects, authors)=> {
 				data.subjects = subjects.rows;
 				data.authors = authors.rows;
-				console.log(data.subjects);
+				// normalise the trove_bibrec order
+				var bibrec = [];
+				for (let prop in data.trove_bibrec) {
+					switch (prop) {
+						case 'Authors':
+						case 'Other Authors':
+						case 'Title':
+						case 'Published':
+						case 'Subjects':
+							break;
+						default:
+							bibrec.push({key:prop,value:data.trove_bibrec[prop] });
+					}
+				}
+				data.trove_bibrec = bibrec;
 				return data;
 			});
 	}

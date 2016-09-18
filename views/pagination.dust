@@ -4,5 +4,5 @@
 		 • Page {page.page} of {page.pages} pages • 
 		<a {?page.next_link}href="{page.next_link}" {/page.next_link}>Next »</a>
 	</p>
-	<sup>(showing {page.items.length} of {page.total} records found)</sup>
+	<sup>(Displaying {page.items.length} of {page.total} records found.)</sup>
 </div>
