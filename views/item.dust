@@ -1,9 +1,9 @@
 {>base/}
 {<content}
-	<h2>Item details:</h2>
+	<h2>Record details:</h2>
 	<h3 id="{item_id}">{title} ({issued})</h3>
 	<p>
-		<strong>authors:</strong> 
+		<strong>Authors:</strong> 
 		{#authors}
 			<a href="/by/author/{author_id}">{?name}{name}{:else}No author{/name}{?type} ({type}){/type}</a>{@sep}, {/sep}
 		{/authors}
