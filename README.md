@@ -29,10 +29,12 @@ Then run the server: `node index.js`.
 
 There is a lot of work to do, this is still just a working prototype.
 
+- show new acquisitions first.
+- destinquish between the old and the new collections.
 - implement proper 404 and 500 pages.
-- smarter search + options (title, author, subject, etc)
+- smarter search + options (title, author, subject, etc).
 - cache queries - particularly to table lengths.
-- orderby option (date, author, title, relevancy)
+- orderby option (date, author, title, relevancy).
 - show count of items next to subject and author links, so that its obvious which subjects/authors have more affiliated records.
-- more creative ways of browsing the collection.
+- more creative ways of browsing the collection (eg. via summary text stories).
 - admin area with basic auth for adding books to the collection. 
