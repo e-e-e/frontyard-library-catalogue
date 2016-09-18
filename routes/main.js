@@ -3,6 +3,8 @@
 
 'use strict';
 
+const querystring = require('querystring')
+
 const express = require('express');
 const Q 			= require('q');
 
@@ -19,11 +21,34 @@ function configure_router() {
 		throw err;
 	}
 
+	function pagination_construct_links (req, page) {
+		var query = req.query;
+		page.page = parseInt(page.page) + 1; // add one to make human understandable.
+		var next_page = page.page;
+		var prev_page = page.page-2;
+		if (next_page != page.pages) {
+			query.page =  next_page;
+			page.next_link = '?'+ querystring.stringify(query);
+		}
+		if (page.page > 1 ) {
+			query.page =  prev_page;
+			page.prev_link = '?'+ querystring.stringify(query);
+		}
+		return page;
+	}
+
 	router.get('/',(req,res) => {
 		var page = req.query.page || 0;
-		library.items(page)
-			.then( page => res.render('index', { title: "The collection:", page:page}))
-			.catch(handle_err);
+		var q = req.query.query;
+		var action;
+		if(q) {
+			action = library.items_dirty_search(q,page);
+		}
+		else {
+			action = library.items(page);
+		}
+		action.then( page => res.render('index', { title: "The collection:", page:pagination_construct_links(req,page)}))
+					.catch(handle_err);
 		
 	});
 
@@ -34,7 +59,7 @@ function configure_router() {
 		library.authors_list(page)
 			.then( page => {
 				let title = 'List of authors';
-				res.render('authors', { title: title, page:page });
+				res.render('authors', { title: title, page:pagination_construct_links(req,page) });
 			})
 			.catch(handle_err);
 	});
@@ -44,7 +69,7 @@ function configure_router() {
 		library.authors_list_by_letter(req.params.letter, page, 1000)
 			.then( page => {
 				let title = 'List of authors starting with '+req.params.letter;
-				res.render('authors', { title: title, page:page });
+				res.render('authors', { title: title, page:pagination_construct_links(req,page) });
 			})
 			.catch(handle_err);
 	});
@@ -54,7 +79,7 @@ function configure_router() {
 		library.subjects_list(page)
 			.then( page => {
 				let title = 'List of subjects';
-				res.render('subjects', { title: title, page:page });
+				res.render('subjects', { title: title, page:pagination_construct_links(req,page) });
 			})
 			.catch(handle_err);
 	});
@@ -64,7 +89,7 @@ function configure_router() {
 		library.subjects_list_by_letter(req.params.letter, page)
 			.then( page => {
 				let title = 'List of subjects starting with '+req.params.letter;
-				res.render('subjects', { title: title, page:page });
+				res.render('subjects', { title: title, page:pagination_construct_links(req,page) });
 			})
 			.catch(handle_err);
 	});
@@ -83,7 +108,7 @@ function configure_router() {
 		Q.all([ library.author(author), library.items_by_author(author, page)])
 			.spread( (author, page) => {
 				let title = "All books by author: "+author.name +' '+ author.type;
-				res.render('index',{ title:title, page:page});
+				res.render('index',{ title:title, page:pagination_construct_links(req,page)});
 			})
 			.catch(handle_err);
 	});
@@ -94,7 +119,7 @@ function configure_router() {
 		Q.all([ library.subject(subject), library.items_by_subject(subject, page)])
 			.spread( (subject, page) => {
 				let title = "All books by subject: "+subject.subject;
-				res.render('index',{ title:title, page:page });
+				res.render('index',{ title:title, page:pagination_construct_links(req,page) });
 			})
 			.catch(handle_err);
 	});

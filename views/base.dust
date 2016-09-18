@@ -17,7 +17,7 @@
 	<header>
 	<h1>**frontyard library**</h1>
 		<h2>
-			<form>
+			<form action="/" method="GET">
 				<a href="/about">About</a> | 
 				<a href="/">Collection</a> | 
 				<a href="/subjects">Subjects</a> | 

@@ -202,6 +202,14 @@ class Library {
 			});
 	}
 
+	items_dirty_search(query, page, x) {
+		var q = '%'+query+'%';
+		var data = make_pagination_data(page,x);
+		var count = db.query('SELECT count(*) FROM items WHERE title ILIKE $1 OR author ILIKE $1', [q]);
+		var select = db.query('SELECT item_id, title, author, publisher, issued, fy_notes, work_holdings, version_holdings, trove_link FROM items WHERE title ILIKE $3 OR author ILIKE $3  ORDER BY work_holdings LIMIT $1 OFFSET $2',[data.per_page,data.offset, q ]);
+		return pagination(count,select,data);
+	}
+
 	items(page, x) {
 		var data = make_pagination_data(page,x);
 		var count = db.query('SELECT count(*) FROM items');
@@ -316,9 +324,6 @@ function mixin_pagination_fn (data) {
 function mixin_items_fn (data) {
 	//and add links etc
 	return r => {
-			data.page = parseInt(data.page) + 1; // add one to make human understandable.
-			data.next_link = (data.page != data.pages) ? '?page='+data.page : undefined;
-			data.prev_link = (data.page > 1 ) ? '?page='+(data.page-2) : undefined;
 			data.items = r.rows;
 			return data;
 		};
